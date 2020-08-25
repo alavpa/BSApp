@@ -1,0 +1,21 @@
+repositories {
+    jcenter()
+}
+
+configurations {
+    detekt
+}
+
+task detekt(type: JavaExec, group: "formatting") {
+    main = "io.gitlab.arturbosch.detekt.cli.Main"
+    classpath = configurations.detekt
+    def input = "$projectDir"
+    def config = "$rootDir/config/detekt/detekt.yml"
+    def exclude = ".*/build/.*,.*/resources/.*"
+    def params = [ '-i', input, '-c', config, '-ex', exclude]
+    args(params)
+}
+
+dependencies {
+    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.10.0-RC1'
+}
