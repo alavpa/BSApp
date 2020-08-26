@@ -5,4 +5,5 @@ import io.reactivex.Single
 
 interface ProductRepository {
     fun getProducts(page: Int, size: Int): Single<List<Product>>
+    fun getProductById(id: Long): Single<Product>
 }
