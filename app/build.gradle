@@ -19,7 +19,7 @@ android {
         targetSdkVersion sdk_version
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,6 +42,8 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "androidx.multidex:multidex:$multidex_version"
+    implementation 'com.google.android.material:material:1.2.0'
 
     // Koin for Android
     implementation "org.koin:koin-android:$koin_version"
@@ -52,7 +54,27 @@ dependencies {
     testImplementation "io.mockk:mockk:$mockk_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
+//    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+//    androidTestImplementation "org.koin:koin-test:$koin_version"
+//    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
+//    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito-inline:2.25.1'
+//    androidTestImplementation 'androidx.test:runner:1.2.0'
+//    androidTestImplementation 'androidx.test:rules:1.2.0'
+//    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+//    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+
+    androidTestImplementation "androidx.test:runner:$runner_version"
+    androidTestImplementation "androidx.test:rules:$rules_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito-inline:$dexmaker_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+
+    // Optional -- Hamcrest library
+    //androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    // Optional -- UI testing with Espresso
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+    // Optional -- UI testing with UI Automator
+    //androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
 }

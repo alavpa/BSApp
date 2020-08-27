@@ -9,4 +9,5 @@
     <color name="colorAccent">
         #03DAC5
     </color>
+    <color name="semi_dark">#AACCCCCC</color>
 </resources>
