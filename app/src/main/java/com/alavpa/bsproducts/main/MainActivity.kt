@@ -1,7 +1,8 @@
-package com.alavpa.bsproducts
+package com.alavpa.bsproducts.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.alavpa.bsproducts.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

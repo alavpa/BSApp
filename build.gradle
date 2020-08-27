@@ -20,6 +20,7 @@ buildscript {
     ext.junit_ext_version = "1.1.1"
     ext.appcompat_version = "1.2.0"
     ext.constraintlayout_version = "2.0.0"
+    ext.core_testing = "2.1.0"
 
     repositories {
         google()
