@@ -28,14 +28,16 @@ class MainPresenter(
     }
 
     fun next() {
-        renderLiveData.value = viewModel.copy(isLoading = true)
-        getProducts.page = getProducts.page + 1
-        getProducts.build().exec { products ->
-            renderLiveData.value = viewModel.copy(
-                items = viewModel.items.toMutableList()
-                    .apply { addAll(products.map { it.toItem() }) },
-                isLoading = false
-            )
+        if (!viewModel.isLoading) {
+            renderLiveData.value = viewModel.copy(isLoading = true)
+            getProducts.page = getProducts.page + 1
+            getProducts.build().exec { products ->
+                renderLiveData.value = viewModel.copy(
+                    items = viewModel.items.toMutableList()
+                        .apply { addAll(products.map { it.toItem() }) },
+                    isLoading = false
+                )
+            }
         }
     }
 
