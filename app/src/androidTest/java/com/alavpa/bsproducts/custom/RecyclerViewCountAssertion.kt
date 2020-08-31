@@ -14,7 +14,7 @@ class RecyclerViewCountAssertion(private val expectedCount: Int) : ViewAssertion
         }
 
         val rv = view as RecyclerView
-        val adapter = rv.adapter as RecyclerView.Adapter
-        assertThat(expectedCount, `is`(adapter.itemCount))
+        val adapter = rv.adapter as? RecyclerView.Adapter
+        assertThat(adapter?.itemCount ?: 0, `is`(expectedCount))
     }
 }
