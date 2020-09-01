@@ -78,7 +78,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.destroy()
         navigation.detach()
+        presenter.detachNavigation()
+        presenter.destroy()
     }
 }
