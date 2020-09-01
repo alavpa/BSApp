@@ -3,21 +3,21 @@ package com.alavpa.bsproducts.data.api
 import com.alavpa.bsproducts.data.model.PageResponse
 import io.reactivex.Single
 import retrofit2.Response
-import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Query
 
 interface Api {
 
     companion object {
-        const val BASE_URL = ""
-        const val TOKEN = ""
+        const val BASE_URL = "https://bestsecret-recruitment-api.herokuapp.com/"
+        const val TOKEN = "ddf49ca9-44cf-4613-b218-ddc030bbfa63"
     }
 
     @GET("products")
     fun getItems(
-        @Field("page") page: Int,
-        @Field("pageSize") size: Int,
+        @Query("page") page: Int,
+        @Query("pageSize") size: Int,
         @Header("Authorization") token: String = TOKEN
     ): Single<Response<PageResponse>>
 }

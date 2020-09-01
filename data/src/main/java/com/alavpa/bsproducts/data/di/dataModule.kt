@@ -8,7 +8,6 @@ import com.alavpa.bsproducts.data.api.DataSource
 import com.alavpa.bsproducts.domain.repository.ProductRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.bind
@@ -30,7 +29,7 @@ fun httpLoggingInterceptor(): HttpLoggingInterceptor = if (BuildConfig.DEBUG)
     HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 else HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
 
-fun httpClient(interceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
+fun httpClient(interceptor: HttpLoggingInterceptor): OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(interceptor)
     .build()
 

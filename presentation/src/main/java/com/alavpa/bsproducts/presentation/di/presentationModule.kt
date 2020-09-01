@@ -3,10 +3,11 @@ package com.alavpa.bsproducts.presentation.di
 import com.alavpa.bsproducts.presentation.main.MainPresenter
 import com.alavpa.bsproducts.presentation.utils.InteractorExecutor
 import com.alavpa.bsproducts.presentation.utils.ThreadProvider
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
     single { ThreadProvider() }
     factory { InteractorExecutor(get()) }
-    factory { MainPresenter(get(), get()) }
+    viewModel { MainPresenter(get(), get()) }
 }

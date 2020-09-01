@@ -12,6 +12,7 @@ import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.presentation.main.MainPresenter
 import com.alavpa.bsproducts.utils.loader.ImageLoader
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.rv_products) }
     private lateinit var gridLayoutManager: GridLayoutManager
 
-    private val presenter: MainPresenter by inject()
+    private val presenter: MainPresenter by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

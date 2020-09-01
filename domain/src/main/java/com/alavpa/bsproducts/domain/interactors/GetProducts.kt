@@ -6,9 +6,12 @@ import com.alavpa.bsproducts.domain.repository.ProductRepository
 import io.reactivex.Single
 
 class GetProducts(private val repository: ProductRepository) : Interactor<Single<List<Product>>> {
+    companion object {
+        private const val PAGE_SIZE = 5
+    }
+
     var page: Int = 1
-    var size: Int = 5
     override fun build(): Single<List<Product>> {
-        return repository.getProducts(page, size)
+        return repository.getProducts(page, PAGE_SIZE)
     }
 }
