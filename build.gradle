@@ -27,6 +27,8 @@ buildscript {
     ext.dexmaker_version = "2.25.1"
     ext.mockito_kotlin_version = "2.2.0"
     ext.glide_version = "4.11.0"
+    ext.material_version = "1.2.0"
+    ext.swiperefreshlayout_version = "1.1.0"
 
     repositories {
         google()

@@ -50,11 +50,19 @@ class MainAdapter(
 
     fun load(items: List<ProductItem>) {
         val range = items.size - this.items.size
+        when {
+            range > 0 -> {
+                this.items.clear()
+                this.items.addAll(items)
+                this.notifyItemRangeInserted(this.items.size, range)
+            }
 
-        if (range > 0) {
-            this.items.clear()
-            this.items.addAll(items)
-            this.notifyItemRangeInserted(this.items.size, range)
+            range < 0 -> {
+                this.items.clear()
+                this.items.addAll(items)
+                this.notifyDataSetChanged()
+            }
         }
+
     }
 }

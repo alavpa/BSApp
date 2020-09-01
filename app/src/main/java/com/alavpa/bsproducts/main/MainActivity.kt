@@ -3,11 +3,11 @@ package com.alavpa.bsproducts.main
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.presentation.main.MainPresenter
 import com.alavpa.bsproducts.utils.loader.ImageLoader
@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private val imageLoader: ImageLoader by inject()
     private val loader: View by lazy { findViewById(R.id.view_loader) }
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.rv_products) }
+    private val pullToRefresh: SwipeRefreshLayout by lazy { findViewById(R.id.pull_to_refresh) }
+
     private lateinit var gridLayoutManager: GridLayoutManager
 
     private val presenter: MainPresenter by viewModel()
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        pullToRefresh.setOnRefreshListener {
+            presenter.load()
+        }
+
         presenter.renderLiveData.observe(this, Observer(::render))
     }
 
@@ -62,9 +68,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun render(viewModel: MainPresenter.ViewModel) {
 
+        pullToRefresh.isRefreshing = viewModel.isLoading
         val adapter = recyclerView.adapter as? MainAdapter
 
         adapter?.load(viewModel.items)
-        loader.visibility = if (viewModel.isLoading) VISIBLE else GONE
+        loader.visibility = GONE
     }
 }

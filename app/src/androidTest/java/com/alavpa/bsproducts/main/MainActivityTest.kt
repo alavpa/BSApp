@@ -7,14 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.custom.RecyclerViewCountAssertion
+import com.alavpa.bsproducts.custom.SwipeToRefreshMatchers
 import com.alavpa.bsproducts.presentation.main.MainPresenter
 import com.alavpa.bsproducts.presentation.model.ProductItem
 import com.alavpa.bsproducts.utils.loader.ImageLoader
@@ -72,7 +70,7 @@ class MainActivityTest {
             )
         }
 
-        onView(withId(R.id.loader)).check(matches(isDisplayed()))
+        onView(withId(R.id.pull_to_refresh)).check(matches(SwipeToRefreshMatchers.isRefreshing()))
     }
 
     @Test
@@ -84,7 +82,9 @@ class MainActivityTest {
             )
         }
 
-        onView(withId(R.id.loader)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.pull_to_refresh)).check(
+            matches(not(SwipeToRefreshMatchers.isRefreshing()))
+        )
     }
 
     @Test
