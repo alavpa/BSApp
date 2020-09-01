@@ -1,8 +1,6 @@
 package com.alavpa.bsproducts.main
 
 import android.os.Bundle
-import android.view.View
-import android.view.View.GONE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,7 +15,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private val imageLoader: ImageLoader by inject()
-    private val loader: View by lazy { findViewById(R.id.view_loader) }
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.rv_products) }
     private val pullToRefresh: SwipeRefreshLayout by lazy { findViewById(R.id.pull_to_refresh) }
 
@@ -72,6 +69,5 @@ class MainActivity : AppCompatActivity() {
         val adapter = recyclerView.adapter as? MainAdapter
 
         adapter?.load(viewModel.items)
-        loader.visibility = GONE
     }
 }
