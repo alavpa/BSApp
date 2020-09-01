@@ -40,7 +40,7 @@ class MainActivityTest {
 
     @Rule
     @JvmField
-    var rule = ActivityTestRule(MainActivity::class.java, true, false)
+    var rule = ActivityTestRule(DetailsActivity::class.java, true, false)
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()

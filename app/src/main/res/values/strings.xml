@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BSProducts</string>
+    <string name="image_descriptor">Product Image</string>
 </resources>

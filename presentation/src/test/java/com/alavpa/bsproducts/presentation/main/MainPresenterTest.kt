@@ -27,7 +27,7 @@ class MainPresenterTest {
     private val productItemMockBuilder = ProductItemMockBuilder()
     private val getProducts: GetProducts = mockk(relaxed = true)
     private val addToCart: AddToCart = mockk()
-    private val navigation: Navigation = mockk()
+    private val navigation: Navigation = mockk(relaxed = true)
     private lateinit var presenter: MainPresenter
 
     @Before
@@ -36,7 +36,7 @@ class MainPresenterTest {
             modules(testModule)
         }
         presenter = MainPresenter(getProducts, addToCart)
-        presenter.attach(navigation)
+        presenter.attachNavigation(navigation)
     }
 
     @After
