@@ -6,6 +6,7 @@ import com.alavpa.bsproducts.domain.interactors.GetProducts
 import com.alavpa.bsproducts.presentation.BasePresenter
 import com.alavpa.bsproducts.presentation.model.ProductItem
 import com.alavpa.bsproducts.presentation.model.toItem
+import com.alavpa.bsproducts.presentation.utils.Navigation
 
 class MainPresenter(
     private val getProducts: GetProducts,
@@ -15,6 +16,16 @@ class MainPresenter(
     val renderLiveData = MutableLiveData<ViewModel>()
     private val viewModel: ViewModel
         get() = renderLiveData.value ?: ViewModel()
+
+    private var navigation: Navigation? = null
+    fun attachNavigation(navigation: Navigation) {
+        this.navigation = navigation
+    }
+
+    fun detachNavigation() {
+        this.navigation = null
+    }
+
 
     fun load() {
         renderLiveData.value = viewModel.copy(isLoading = true)
@@ -39,6 +50,10 @@ class MainPresenter(
                 )
             }
         }
+    }
+
+    fun clickOn(item: ProductItem) {
+        navigation?.goToProductDetails(item.id)
     }
 
     data class ViewModel(

@@ -6,7 +6,9 @@ import androidx.core.view.get
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
@@ -132,5 +134,27 @@ class MainActivityTest {
     fun check_title() {
         rule.launchActivity(null)
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("BSProducts"))))
+    }
+
+    @Test
+    fun onClickItem() {
+        rule.launchActivity(null)
+        rule.runOnUiThread {
+            liveData.value = MainPresenter.ViewModel(
+                items = listOf(
+                    ProductItem(1, "name", "brand", 40, "€", "image1"),
+                    ProductItem(2, "name", "brand", 40, "€", "image2"),
+                    ProductItem(3, "name", "brand", 40, "€", "image3")
+                )
+            )
+        }
+
+        onView(withId(R.id.rv_products)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<MainAdapter.Item>(0, click())
+        )
+
+        verify(presenter).clickOn(
+            ProductItem(1, "name", "brand", 40, "€", "image1")
+        )
     }
 }

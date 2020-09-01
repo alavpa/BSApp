@@ -9,11 +9,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.presentation.main.MainPresenter
 import com.alavpa.bsproducts.utils.loader.ImageLoader
+import com.alavpa.bsproducts.utils.navigation.BSNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private val navigation: BSNavigation by inject()
     private val imageLoader: ImageLoader by inject()
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.rv_products) }
     private val pullToRefresh: SwipeRefreshLayout by lazy { findViewById(R.id.pull_to_refresh) }
@@ -32,8 +34,11 @@ class MainActivity : AppCompatActivity() {
             false
         )
 
+        navigation.attach(this)
+        presenter.attachNavigation(navigation)
+
         recyclerView.layoutManager = gridLayoutManager
-        recyclerView.adapter = MainAdapter(this, imageLoader)
+        recyclerView.adapter = MainAdapter(this, imageLoader, presenter::clickOn)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -69,5 +74,11 @@ class MainActivity : AppCompatActivity() {
         val adapter = recyclerView.adapter as? MainAdapter
 
         adapter?.load(viewModel.items)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.destroy()
+        navigation.detach()
     }
 }

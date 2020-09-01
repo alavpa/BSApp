@@ -5,8 +5,10 @@ import com.alavpa.bsproducts.domain.interactors.AddToCart
 import com.alavpa.bsproducts.domain.interactors.GetProducts
 import com.alavpa.bsproducts.presentation.ProductMockBuilder
 import com.alavpa.bsproducts.presentation.di.testModule
+import com.alavpa.bsproducts.presentation.utils.Navigation
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import io.reactivex.Single
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -25,6 +27,7 @@ class MainPresenterTest {
     private val productItemMockBuilder = ProductItemMockBuilder()
     private val getProducts: GetProducts = mockk(relaxed = true)
     private val addToCart: AddToCart = mockk()
+    private val navigation: Navigation = mockk()
     private lateinit var presenter: MainPresenter
 
     @Before
@@ -33,6 +36,7 @@ class MainPresenterTest {
             modules(testModule)
         }
         presenter = MainPresenter(getProducts, addToCart)
+        presenter.attach(navigation)
     }
 
     @After
@@ -93,5 +97,11 @@ class MainPresenterTest {
             )
         )
         assertEquals(viewModel, presenter.renderLiveData.value)
+    }
+
+    @Test
+    fun `on click on item`() {
+        presenter.clickOn(productItemMockBuilder.id(1).build())
+        verify { navigation.goToProductDetails(1) }
     }
 }

@@ -12,7 +12,8 @@ import com.alavpa.bsproducts.utils.loader.ImageLoader
 
 class MainAdapter(
     private val context: Context,
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val clickOn: (ProductItem) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.Item>() {
 
     class Item(
@@ -42,6 +43,9 @@ class MainAdapter(
 
     override fun onBindViewHolder(holder: Item, position: Int) {
         holder.bind(items[position])
+        holder.itemView.setOnClickListener {
+            clickOn(items[position])
+        }
     }
 
     override fun getItemCount(): Int {

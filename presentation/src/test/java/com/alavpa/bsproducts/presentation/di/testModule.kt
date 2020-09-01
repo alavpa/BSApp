@@ -1,10 +1,12 @@
 package com.alavpa.bsproducts.presentation.di
 
 import com.alavpa.bsproducts.presentation.utils.InteractorExecutor
+import com.alavpa.bsproducts.presentation.utils.Navigation
 import com.alavpa.bsproducts.presentation.utils.ThreadProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.schedulers.Schedulers
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val testModule = module(override = true) {
