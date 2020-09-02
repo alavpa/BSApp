@@ -33,6 +33,7 @@ class MainPresenter(
         getProducts.build().exec(::renderError) { products ->
             likes.build().exec { likesList ->
                 renderLiveData.value = viewModel.copy(
+                    clear = true,
                     items = products.map { it.toItem(likesList.contains(it.id)) },
                     isLoading = false
                 )
@@ -47,6 +48,7 @@ class MainPresenter(
             getProducts.build().exec(::renderError) { products ->
                 likes.build().exec { likesList ->
                     renderLiveData.value = viewModel.copy(
+                        clear = false,
                         items = viewModel.items.toMutableList()
                             .apply { addAll(products.map { it.toItem(likesList.contains(it.id)) }) },
                         isLoading = false
@@ -77,10 +79,6 @@ class MainPresenter(
         navigation?.goToProductDetails(item.id)
     }
 
-    fun likeOn(item: ProductItem) {
-
-    }
-
     fun onCloseUnknownError() {
         renderLiveData.value = viewModel.copy(showUnknownError = false)
     }
@@ -88,6 +86,7 @@ class MainPresenter(
     data class ViewModel(
         val isLoading: Boolean = false,
         val items: List<ProductItem> = listOf(),
+        val clear: Boolean = false,
         val showServerException: Pair<Boolean, String> = Pair(false, ""),
         val showUnknownError: Boolean = false
     )

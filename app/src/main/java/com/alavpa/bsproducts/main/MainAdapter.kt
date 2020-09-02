@@ -56,9 +56,14 @@ class MainAdapter(
         return items.size
     }
 
-    fun load(items: List<ProductItem>) {
+    fun load(items: List<ProductItem>, clear: Boolean) {
         val range = items.size - this.items.size
         when {
+            clear -> {
+                this.items.clear()
+                this.items.addAll(items)
+                this.notifyDataSetChanged()
+            }
             range > 0 -> {
                 this.items.clear()
                 this.items.addAll(items)
@@ -70,7 +75,6 @@ class MainAdapter(
                 this.items.addAll(items)
                 this.notifyDataSetChanged()
             }
-            else -> notifyDataSetChanged()
         }
     }
 }

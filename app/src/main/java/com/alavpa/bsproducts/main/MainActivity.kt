@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         pullToRefresh.isRefreshing = viewModel.isLoading
         val adapter = recyclerView.adapter as? MainAdapter
 
-        adapter?.load(viewModel.items)
+        adapter?.load(viewModel.items, viewModel.clear)
 
         if (viewModel.showServerException.first) {
             showServerDialog(viewModel.showServerException.second)

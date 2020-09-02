@@ -80,7 +80,8 @@ class MainPresenterTest {
                 productItemMockBuilder.id(1).liked(true).build(),
                 productItemMockBuilder.id(2).liked(false).build(),
                 productItemMockBuilder.id(3).liked(false).build()
-            )
+            ),
+            clear = true
         )
 
         assertEquals(viewModel1, states[0])
