@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.reactivex.Completable
-import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 

@@ -4,7 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.alavpa.bsproducts.domain.error.FeatureNotImplementedException
 import com.alavpa.bsproducts.domain.error.NoStockException
 import com.alavpa.bsproducts.domain.error.ServerException
-import com.alavpa.bsproducts.domain.interactors.*
+import com.alavpa.bsproducts.domain.interactors.AddToCart
+import com.alavpa.bsproducts.domain.interactors.Dislike
+import com.alavpa.bsproducts.domain.interactors.GetProductDetails
+import com.alavpa.bsproducts.domain.interactors.Like
+import com.alavpa.bsproducts.domain.interactors.Likes
 import com.alavpa.bsproducts.domain.model.Product
 import com.alavpa.bsproducts.presentation.BasePresenter
 import com.alavpa.bsproducts.presentation.utils.Navigation
@@ -41,7 +45,6 @@ class DetailsPresenter(
             likes.build().exec { likesList ->
                 renderProduct(product, likesList.contains(product.id))
             }
-
         }
     }
 
@@ -72,6 +75,8 @@ class DetailsPresenter(
     }
 
     private fun renderProduct(product: Product, liked: Boolean) {
+
+        val priceWithDiscount = product.price - (product.discountPercentage / PERCENT * product.price).toInt()
         renderLiveData.value = viewModel.copy(
             productId = product.id,
             title = product.name,
@@ -79,14 +84,10 @@ class DetailsPresenter(
             brand = product.brand,
             description = product.description,
             price = "${product.price}${product.currency}",
-            priceWithDiscount = "${calculatePriceWithDiscount(product)}${product.currency}",
+            priceWithDiscount = "${priceWithDiscount}${product.currency}",
             isLoading = false,
             liked = liked
         )
-    }
-
-    private fun calculatePriceWithDiscount(product: Product): Int {
-        return product.price - (product.discountPercentage / PERCENT * product.price).toInt()
     }
 
     fun close() {

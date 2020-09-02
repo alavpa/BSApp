@@ -26,7 +26,7 @@ class LikeTest {
             mockBuilder.stock(5).build()
         )
 
-        every { repository.addToCart(any()) } returns Completable.complete()
+        every { repository.like(any()) } returns Completable.complete()
 
         like.productId = 1
 

@@ -86,7 +86,7 @@ class DetailsActivity : AppCompatActivity() {
 
         lottieAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator?) {
-
+                // no-op
             }
 
             override fun onAnimationEnd(animation: Animator?) {
@@ -98,7 +98,9 @@ class DetailsActivity : AppCompatActivity() {
                 lottieAnimation.progress = 0f
             }
 
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationRepeat(animation: Animator?) {
+                // no-op
+            }
         })
 
         setSupportActionBar(toolbar)

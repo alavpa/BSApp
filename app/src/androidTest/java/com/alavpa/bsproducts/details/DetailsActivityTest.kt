@@ -7,7 +7,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withChild
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.custom.DrawableMatchers
@@ -65,7 +69,7 @@ class DetailsActivityTest {
     }
 
     @Test
-    fun onAddToCart() {
+    fun on_add_product_to_cart() {
         scenario = ActivityScenario.launch(DetailsActivity::class.java)
 
         onView(withId(R.id.btn_add)).perform(click())
@@ -76,11 +80,9 @@ class DetailsActivityTest {
     fun check_activity_title() {
         scenario = ActivityScenario.launch(DetailsActivity::class.java)
 
-
         liveData.value = DetailsPresenter.ViewModel(
             title = "title"
         )
-
 
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("title"))))
     }
@@ -89,7 +91,6 @@ class DetailsActivityTest {
     fun check_image() {
         scenario = ActivityScenario.launch(DetailsActivity::class.java)
 
-
         scenario.onActivity {
             liveData.value = DetailsPresenter.ViewModel(
                 image = "image"
@@ -97,7 +98,6 @@ class DetailsActivityTest {
 
             verify(imageLoader).load(it, "image", it.image)
         }
-
     }
 
     @Test

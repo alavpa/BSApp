@@ -9,7 +9,11 @@ import com.alavpa.bsproducts.presentation.ProductItemMockBuilder
 import com.alavpa.bsproducts.presentation.ProductMockBuilder
 import com.alavpa.bsproducts.presentation.di.testModule
 import com.alavpa.bsproducts.presentation.utils.Navigation
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.capture
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Single
 import org.junit.After
 import org.junit.Assert.assertEquals

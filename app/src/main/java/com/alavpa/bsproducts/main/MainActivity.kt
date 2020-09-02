@@ -51,15 +51,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = gridLayoutManager.childCount
+                val totalItemCount = gridLayoutManager.itemCount
+                val pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition()
 
-                if (dy > 0) {
-                    val visibleItemCount = gridLayoutManager.childCount
-                    val totalItemCount = gridLayoutManager.itemCount
-                    val pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition()
-
-                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                        presenter.next()
-                    }
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                    presenter.next()
                 }
             }
         })
