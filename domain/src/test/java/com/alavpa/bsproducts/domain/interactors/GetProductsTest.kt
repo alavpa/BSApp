@@ -26,7 +26,6 @@ class GetProductsTest {
         every { repository.getProducts(any(), any()) } returns Single.just(result)
 
         getProducts.page = 1
-        getProducts.size = 5
         getProducts.build().test().also {
             it.assertValue(result)
             it.assertNoErrors()

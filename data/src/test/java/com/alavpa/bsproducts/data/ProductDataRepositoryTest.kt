@@ -1,6 +1,7 @@
 package com.alavpa.bsproducts.data
 
 import com.alavpa.bsproducts.data.api.ApiDataSource
+import com.alavpa.bsproducts.data.model.ProductDetailsResponse
 import com.alavpa.bsproducts.data.model.ProductItemResponse
 import com.alavpa.bsproducts.domain.model.Product
 import io.mockk.every
@@ -72,5 +73,40 @@ class ProductDataRepositoryTest {
         }
 
         verify { dataSource.getItems(1, 2) }
+    }
+
+    @Test
+    fun `get product details`() {
+        every { dataSource.getProductDetails(any()) } returns Single.just(
+            ProductDetailsResponse(
+                1,
+                "name",
+                "description",
+                "brand",
+                10,
+                "euro",
+                50,
+                "image",
+                5
+            )
+        )
+
+        repository.getProductById(1).test().also {
+            it.assertValue(
+                Product(
+                    1,
+                    "name",
+                    "description",
+                    "brand",
+                    10,
+                    "euro",
+                    50,
+                    "image",
+                    5
+                )
+            )
+        }
+
+        verify { dataSource.getProductDetails(1) }
     }
 }

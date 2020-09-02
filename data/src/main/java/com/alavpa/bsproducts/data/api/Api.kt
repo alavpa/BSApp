@@ -1,10 +1,12 @@
 package com.alavpa.bsproducts.data.api
 
 import com.alavpa.bsproducts.data.model.PageResponse
+import com.alavpa.bsproducts.data.model.ProductDetailsResponse
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Api {
@@ -20,4 +22,10 @@ interface Api {
         @Query("pageSize") size: Int,
         @Header("Authorization") token: String = TOKEN
     ): Single<Response<PageResponse>>
+
+    @GET("product/{productId}")
+    fun getProductDetails(
+        @Path("productId") id: Long,
+        @Header("Authorization") token: String = TOKEN
+    ): Single<Response<ProductDetailsResponse>>
 }

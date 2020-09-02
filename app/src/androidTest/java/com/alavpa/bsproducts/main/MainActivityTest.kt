@@ -40,7 +40,7 @@ class MainActivityTest {
 
     @Rule
     @JvmField
-    var rule = ActivityTestRule(DetailsActivity::class.java, true, false)
+    var rule = ActivityTestRule(MainActivity::class.java, true, false)
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -137,7 +137,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun onClickItem() {
+    fun on_click_item() {
         rule.launchActivity(null)
         rule.runOnUiThread {
             liveData.value = MainPresenter.ViewModel(
@@ -156,5 +156,29 @@ class MainActivityTest {
         verify(presenter).clickOn(
             ProductItem(1, "name", "brand", 40, "€", "image1")
         )
+    }
+
+    @Test
+    fun show_server_exception_dialog() {
+        rule.launchActivity(null)
+        rule.runOnUiThread {
+            liveData.value = MainPresenter.ViewModel(
+                showServerException = Pair(true, "user")
+            )
+        }
+
+        onView(withText("user")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun show_unknown_error_dialog() {
+        rule.launchActivity(null)
+        rule.runOnUiThread {
+            liveData.value = MainPresenter.ViewModel(
+                showUnknownError = true
+            )
+        }
+
+        onView(withText(R.string.unknown_error)).check(matches(isDisplayed()))
     }
 }

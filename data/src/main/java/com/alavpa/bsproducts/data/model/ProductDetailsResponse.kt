@@ -2,7 +2,7 @@ package com.alavpa.bsproducts.data.model
 
 import com.alavpa.bsproducts.domain.model.Product
 
-data class ProductDetailResponse(
+data class ProductDetailsResponse(
     val id: Long,
     val name: String,
     val description: String,
@@ -14,7 +14,7 @@ data class ProductDetailResponse(
     val stock: Int
 )
 
-fun ProductDetailResponse.toProduct(): Product = Product(
+fun ProductDetailsResponse.toProduct(): Product = Product(
     this.id,
     this.name,
     this.description,

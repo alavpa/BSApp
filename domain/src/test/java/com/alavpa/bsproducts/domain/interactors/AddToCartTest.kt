@@ -29,14 +29,12 @@ class AddToCartTest {
             mockBuilder.stock(5).build()
         )
 
-        every { repository.addToCart(any()) } returns Completable.error(
-            FeatureNotImplementedException()
-        )
+        every { repository.addToCart(any()) } returns Completable.complete()
 
         addToCart.productId = 1
 
         addToCart.build().test().also {
-            it.assertError(FeatureNotImplementedException::class.java)
+            it.assertComplete()
         }
 
         verify { repository.getProductById(1) }

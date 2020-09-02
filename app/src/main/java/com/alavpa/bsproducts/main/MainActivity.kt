@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.presentation.main.MainPresenter
+import com.alavpa.bsproducts.utils.dialog.ServerDialog
+import com.alavpa.bsproducts.utils.dialog.UnknownErrorDialog
 import com.alavpa.bsproducts.utils.loader.ImageLoader
 import com.alavpa.bsproducts.utils.navigation.BSNavigation
 import org.koin.android.ext.android.inject
@@ -74,6 +76,35 @@ class MainActivity : AppCompatActivity() {
         val adapter = recyclerView.adapter as? MainAdapter
 
         adapter?.load(viewModel.items)
+
+        if (viewModel.showServerException.first) {
+            showServerDialog(viewModel.showServerException.second)
+        }
+
+        if (viewModel.showUnknownError) {
+            showUnknownError()
+        }
+    }
+
+    private fun showServerDialog(message: String) {
+        ServerDialog.newInstance(
+            message,
+            object : ServerDialog.ServerDialogListener {
+                override fun onOk() {
+                    presenter.onCloseServerException()
+                }
+            }
+        ).show(supportFragmentManager, "ServerDialog")
+    }
+
+    private fun showUnknownError() {
+        UnknownErrorDialog.newInstance(
+            object : UnknownErrorDialog.UnknownErrorDialogListener {
+                override fun onOk() {
+                    presenter.onCloseUnknownError()
+                }
+            }
+        ).show(supportFragmentManager, "UnknownErrorDialog")
     }
 
     override fun onDestroy() {

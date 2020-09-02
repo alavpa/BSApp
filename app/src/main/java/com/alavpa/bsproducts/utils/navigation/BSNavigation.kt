@@ -2,7 +2,7 @@ package com.alavpa.bsproducts.utils.navigation
 
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.alavpa.bsproducts.main.DetailsActivity
+import com.alavpa.bsproducts.details.DetailsActivity
 import com.alavpa.bsproducts.presentation.utils.Navigation
 
 class BSNavigation : Navigation {
@@ -22,6 +22,10 @@ class BSNavigation : Navigation {
                 putExtra(EXTRA_ID, id)
             }
         )
+    }
+
+    override fun close() {
+        activity?.finish()
     }
 
     fun detach() {
