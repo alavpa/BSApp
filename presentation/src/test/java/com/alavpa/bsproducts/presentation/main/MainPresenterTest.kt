@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.alavpa.bsproducts.domain.error.ServerException
 import com.alavpa.bsproducts.domain.interactors.GetProducts
+import com.alavpa.bsproducts.domain.interactors.Likes
 import com.alavpa.bsproducts.presentation.ProductItemMockBuilder
 import com.alavpa.bsproducts.presentation.ProductMockBuilder
 import com.alavpa.bsproducts.presentation.di.testModule
@@ -27,6 +28,7 @@ class MainPresenterTest {
     private val productMockBuilder = ProductMockBuilder()
     private val productItemMockBuilder = ProductItemMockBuilder()
     private val getProducts: GetProducts = mock()
+    private val likes: Likes = mock()
     private val navigation: Navigation = mock()
     private lateinit var presenter: MainPresenter
 
@@ -35,7 +37,7 @@ class MainPresenterTest {
         startKoin {
             modules(testModule)
         }
-        presenter = MainPresenter(getProducts)
+        presenter = MainPresenter(getProducts, likes)
         presenter.attachNavigation(navigation)
     }
 
@@ -60,6 +62,8 @@ class MainPresenterTest {
             )
         )
 
+        given(likes.build()).willReturn(Single.just(listOf(1)))
+
         presenter.load()
 
         val captor = ArgumentCaptor.forClass(MainPresenter.ViewModel::class.java)
@@ -73,9 +77,9 @@ class MainPresenterTest {
 
         val viewModel2 = MainPresenter.ViewModel(
             items = listOf(
-                productItemMockBuilder.id(1).build(),
-                productItemMockBuilder.id(2).build(),
-                productItemMockBuilder.id(3).build()
+                productItemMockBuilder.id(1).liked(true).build(),
+                productItemMockBuilder.id(2).liked(false).build(),
+                productItemMockBuilder.id(3).liked(false).build()
             )
         )
 
@@ -85,6 +89,10 @@ class MainPresenterTest {
 
     @Test
     fun `get next page`() {
+
+        val mockObserver: Observer<MainPresenter.ViewModel> = mock()
+        presenter.renderLiveData.observeForever(mockObserver)
+
         presenter.renderLiveData.value = MainPresenter.ViewModel(
             items = listOf(
                 productItemMockBuilder.id(1).build(),
@@ -92,6 +100,7 @@ class MainPresenterTest {
                 productItemMockBuilder.id(3).build()
             )
         )
+
         given(getProducts.build()).willReturn(
             Single.just(
                 listOf(
@@ -102,19 +111,46 @@ class MainPresenterTest {
             )
         )
 
+        given(likes.build()).willReturn(Single.just(listOf(5)))
+
         presenter.next()
 
-        val viewModel = MainPresenter.ViewModel(
+        val captor = ArgumentCaptor.forClass(MainPresenter.ViewModel::class.java)
+        verify(mockObserver, times(3)).onChanged(capture(captor))
+
+        val states = captor.allValues
+
+        val viewModel0 = MainPresenter.ViewModel(
+            items = listOf(
+                productItemMockBuilder.id(1).build(),
+                productItemMockBuilder.id(2).build(),
+                productItemMockBuilder.id(3).build()
+            )
+        )
+
+        val viewModel1 = MainPresenter.ViewModel(
+            items = listOf(
+                productItemMockBuilder.id(1).build(),
+                productItemMockBuilder.id(2).build(),
+                productItemMockBuilder.id(3).build()
+            ),
+            isLoading = true
+        )
+
+        val viewModel2 = MainPresenter.ViewModel(
             items = listOf(
                 productItemMockBuilder.id(1).build(),
                 productItemMockBuilder.id(2).build(),
                 productItemMockBuilder.id(3).build(),
                 productItemMockBuilder.id(4).build(),
-                productItemMockBuilder.id(5).build(),
-                productItemMockBuilder.id(6).build()
+                productItemMockBuilder.id(5).liked(true).build(),
+                productItemMockBuilder.id(6).liked(false).build()
             )
         )
-        assertEquals(viewModel, presenter.renderLiveData.value)
+
+        assertEquals(viewModel0, states[0])
+        assertEquals(viewModel1, states[1])
+        assertEquals(viewModel2, states[2])
     }
 
     @Test
