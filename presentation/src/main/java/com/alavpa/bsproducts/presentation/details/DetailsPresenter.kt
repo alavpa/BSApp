@@ -1,6 +1,7 @@
 package com.alavpa.bsproducts.presentation.details
 
 import androidx.lifecycle.MutableLiveData
+import com.alavpa.bsproducts.domain.error.FeatureNotImplementedException
 import com.alavpa.bsproducts.domain.error.NoStockException
 import com.alavpa.bsproducts.domain.error.ServerException
 import com.alavpa.bsproducts.domain.interactors.AddToCart
@@ -41,6 +42,10 @@ class DetailsPresenter(
 
     private fun renderError(throwable: Throwable) {
         when (throwable) {
+            is FeatureNotImplementedException -> renderLiveData.value = viewModel.copy(
+                showFeatureNotImplementedError = true,
+                isLoading = false
+            )
             is NoStockException ->
                 renderLiveData.value = viewModel.copy(showNoStockError = true, isLoading = false)
             is ServerException ->

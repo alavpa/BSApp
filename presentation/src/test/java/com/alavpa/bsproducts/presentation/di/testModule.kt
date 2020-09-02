@@ -2,8 +2,8 @@ package com.alavpa.bsproducts.presentation.di
 
 import com.alavpa.bsproducts.presentation.utils.InteractorExecutor
 import com.alavpa.bsproducts.presentation.utils.ThreadProvider
-import io.mockk.every
-import io.mockk.mockk
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.schedulers.Schedulers
 import org.koin.dsl.module
 
@@ -13,8 +13,8 @@ val testModule = module(override = true) {
 }
 
 fun threadProvider(): ThreadProvider {
-    return mockk<ThreadProvider>().apply {
-        every { provideIO() } returns Schedulers.trampoline()
-        every { provideMain() } returns Schedulers.trampoline()
+    return mock<ThreadProvider>().apply {
+        given(provideIO()).willReturn(Schedulers.trampoline())
+        given(provideMain()).willReturn(Schedulers.trampoline())
     }
 }

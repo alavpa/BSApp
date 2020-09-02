@@ -9,8 +9,8 @@ import com.alavpa.bsproducts.domain.interactors.GetProductDetails
 import com.alavpa.bsproducts.presentation.ProductMockBuilder
 import com.alavpa.bsproducts.presentation.di.testModule
 import com.alavpa.bsproducts.presentation.utils.Navigation
-import io.mockk.every
-import io.mockk.mockk
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.After
@@ -27,9 +27,9 @@ class DetailsPresenterTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val productMockBuilder = ProductMockBuilder()
-    private val getProductDetails: GetProductDetails = mockk(relaxed = true)
-    private val addToCart: AddToCart = mockk(relaxed = true)
-    private val navigation: Navigation = mockk(relaxed = true)
+    private val getProductDetails: GetProductDetails = mock()
+    private val addToCart: AddToCart = mock()
+    private val navigation: Navigation = mock()
     private lateinit var presenter: DetailsPresenter
 
     @Before
@@ -49,16 +49,18 @@ class DetailsPresenterTest {
     @Test
     fun `load item`() {
 
-        every { getProductDetails.build() } returns Single.just(
-            productMockBuilder.id(1)
-                .name("title")
-                .brand("brand")
-                .image("image")
-                .description("description")
-                .price(20)
-                .discount(50)
-                .currency("$")
-                .build()
+        given(getProductDetails.build()).willReturn(
+            Single.just(
+                productMockBuilder.id(1)
+                    .name("title")
+                    .brand("brand")
+                    .image("image")
+                    .description("description")
+                    .price(20)
+                    .discount(50)
+                    .currency("$")
+                    .build()
+            )
         )
 
         presenter.load(1)
@@ -78,7 +80,7 @@ class DetailsPresenterTest {
 
     @Test
     fun `on add to cart item with no stock`() {
-        every { addToCart.build() } returns Completable.error(NoStockException())
+        given(addToCart.build()).willReturn(Completable.error(NoStockException()))
         presenter.onAddToCart()
 
         val viewModel = DetailsPresenter.ViewModel(
@@ -90,7 +92,7 @@ class DetailsPresenterTest {
 
     @Test
     fun `on add to cart item with feature not implemented`() {
-        every { addToCart.build() } returns Completable.error(FeatureNotImplementedException())
+        given(addToCart.build()).willReturn(Completable.error(FeatureNotImplementedException()))
         presenter.onAddToCart()
 
         val viewModel = DetailsPresenter.ViewModel(
@@ -102,7 +104,7 @@ class DetailsPresenterTest {
 
     @Test
     fun `on add to cart item with unknown error`() {
-        every { addToCart.build() } returns Completable.error(Exception())
+        given(addToCart.build()).willReturn(Completable.error(Exception()))
         presenter.onAddToCart()
 
         val viewModel = DetailsPresenter.ViewModel(
@@ -114,7 +116,7 @@ class DetailsPresenterTest {
 
     @Test
     fun `on load product server error`() {
-        every { getProductDetails.build() } returns Single.error(ServerException("user"))
+        given(getProductDetails.build()).willReturn(Single.error(ServerException("user")))
         presenter.load(1)
 
         val viewModel = DetailsPresenter.ViewModel(
@@ -125,7 +127,7 @@ class DetailsPresenterTest {
 
     @Test
     fun `on load product unknown error`() {
-        every { getProductDetails.build() } returns Single.error(Throwable())
+        given(getProductDetails.build()).willReturn(Single.error(Throwable()))
         presenter.load(1)
 
         val viewModel = DetailsPresenter.ViewModel(
@@ -136,7 +138,8 @@ class DetailsPresenterTest {
 
     @Test
     fun `on add to cart unknown error`() {
-        every { getProductDetails.build() } returns Single.error(Throwable())
+        given(getProductDetails.build()).willReturn(Single.error(Throwable()))
+
         presenter.load(1)
 
         val viewModel = DetailsPresenter.ViewModel(
