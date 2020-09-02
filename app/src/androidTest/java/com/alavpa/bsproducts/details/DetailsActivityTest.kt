@@ -10,6 +10,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alavpa.bsproducts.R
+import com.alavpa.bsproducts.custom.DrawableMatchers
 import com.alavpa.bsproducts.custom.SwipeToRefreshMatchers
 import com.alavpa.bsproducts.presentation.details.DetailsPresenter
 import com.alavpa.bsproducts.utils.dialog.ToastManager
@@ -228,5 +229,27 @@ class DetailsActivityTest {
         onView(withId(R.id.menu_like)).perform(click())
 
         verify(presenter).onClickLike()
+    }
+
+    @Test
+    fun icon_showed_when_product_is_liked() {
+
+        scenario = ActivityScenario.launch(DetailsActivity::class.java)
+        liveData.value = DetailsPresenter.ViewModel(liked = true)
+
+        onView(withId(R.id.menu_like)).check(
+            matches(DrawableMatchers.withMenuDrawable(R.drawable.ic_baseline_favorite_white_24))
+        )
+    }
+
+    @Test
+    fun icon_showed_when_product_is_not_liked() {
+
+        scenario = ActivityScenario.launch(DetailsActivity::class.java)
+        liveData.value = DetailsPresenter.ViewModel(liked = false)
+
+        onView(withId(R.id.menu_like)).check(
+            matches(DrawableMatchers.withMenuDrawable(R.drawable.ic_baseline_favorite_white_border_24))
+        )
     }
 }
