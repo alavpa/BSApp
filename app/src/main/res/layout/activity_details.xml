@@ -108,6 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin"
-        android:src="@drawable/ic_baseline_shopping_cart_white_24" />
+        app:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_shopping_cart_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
