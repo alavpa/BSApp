@@ -8,4 +8,5 @@
     <string name="unknown_error">Unknown error, please try later.</string>
     <string name="product_added">Product added to cart</string>
     <string name="add_to_cart">Add to cart</string>
+    <string name="liked">liked</string>
 </resources>

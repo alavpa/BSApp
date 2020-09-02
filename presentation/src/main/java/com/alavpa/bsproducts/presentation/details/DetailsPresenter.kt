@@ -4,15 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import com.alavpa.bsproducts.domain.error.FeatureNotImplementedException
 import com.alavpa.bsproducts.domain.error.NoStockException
 import com.alavpa.bsproducts.domain.error.ServerException
-import com.alavpa.bsproducts.domain.interactors.AddToCart
-import com.alavpa.bsproducts.domain.interactors.GetProductDetails
+import com.alavpa.bsproducts.domain.interactors.*
 import com.alavpa.bsproducts.domain.model.Product
 import com.alavpa.bsproducts.presentation.BasePresenter
 import com.alavpa.bsproducts.presentation.utils.Navigation
 
 class DetailsPresenter(
     private val getProductDetails: GetProductDetails,
-    private val addToCart: AddToCart
+    private val addToCart: AddToCart,
+    private val likes: Likes,
+    private val like: Like,
+    private val dislike: Dislike,
 ) : BasePresenter() {
 
     companion object {
@@ -36,7 +38,10 @@ class DetailsPresenter(
         renderLiveData.value = viewModel.copy(isLoading = true)
         getProductDetails.productId = productId
         getProductDetails.build().exec(::renderError) { product ->
-            renderProduct(product)
+            likes.build().exec { likesList ->
+                renderProduct(product, likesList.contains(product.id))
+            }
+
         }
     }
 
@@ -66,7 +71,7 @@ class DetailsPresenter(
         }
     }
 
-    private fun renderProduct(product: Product) {
+    private fun renderProduct(product: Product, liked: Boolean) {
         renderLiveData.value = viewModel.copy(
             productId = product.id,
             title = product.name,
@@ -75,7 +80,8 @@ class DetailsPresenter(
             description = product.description,
             price = "${product.price}${product.currency}",
             priceWithDiscount = "${calculatePriceWithDiscount(product)}${product.currency}",
-            isLoading = false
+            isLoading = false,
+            liked = liked
         )
     }
 
@@ -114,6 +120,20 @@ class DetailsPresenter(
         renderLiveData.value = viewModel.copy(showUnknownError = false)
     }
 
+    fun onClickLike() {
+        if (viewModel.liked) {
+            dislike.productId = viewModel.productId
+            dislike.build().exec {
+                load(viewModel.productId)
+            }
+        } else {
+            like.productId = viewModel.productId
+            like.build().exec {
+                load(viewModel.productId)
+            }
+        }
+    }
+
     data class ViewModel(
         val isLoading: Boolean = false,
         val productId: Long = 0,
@@ -123,6 +143,7 @@ class DetailsPresenter(
         val description: String = "",
         val price: String = "",
         val priceWithDiscount: String = "",
+        val liked: Boolean = false,
         val showNoStockError: Boolean = false,
         val showFeatureNotImplementedError: Boolean = false,
         val showUnknownError: Boolean = false,

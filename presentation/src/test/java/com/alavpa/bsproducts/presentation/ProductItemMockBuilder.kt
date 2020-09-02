@@ -10,7 +10,8 @@ class ProductItemMockBuilder {
         "",
         0,
         "",
-        ""
+        "",
+        false
     )
 
     fun id(id: Long): ProductItemMockBuilder {
@@ -40,6 +41,11 @@ class ProductItemMockBuilder {
 
     fun image(image: String): ProductItemMockBuilder {
         product = product.copy(image = image)
+        return this
+    }
+
+    fun liked(liked: Boolean): ProductItemMockBuilder {
+        product = product.copy(liked = liked)
         return this
     }
 

@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import io.reactivex.Single
 import okhttp3.ResponseBody
 
-class ApiDataSource(private val api: Api, private val gson: Gson) : DataSource {
+class ApiDataSource(private val api: Api, private val gson: Gson) : RemoteDataSource {
     override fun getItems(page: Int, size: Int): Single<List<ProductItemResponse>> {
         return api.getItems(page, size).map {
             if (it.isSuccessful) {

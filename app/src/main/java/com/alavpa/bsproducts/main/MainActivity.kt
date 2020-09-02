@@ -42,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         presenter.attachNavigation(navigation)
 
         recyclerView.layoutManager = gridLayoutManager
-        recyclerView.adapter = MainAdapter(this, imageLoader, presenter::clickOn)
+        recyclerView.adapter = MainAdapter(
+            this,
+            imageLoader,
+            presenter::clickOn
+        )
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
