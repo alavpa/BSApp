@@ -304,6 +304,9 @@ class DetailsPresenterTest {
     @Test
     fun `on click menu like when is liked`() {
 
+        val mockObserver: Observer<DetailsPresenter.ViewModel> = mock()
+        presenter.renderLiveData.observeForever(mockObserver)
+
         given(dislike.build()).willReturn(Completable.complete())
         given(getProductDetails.build()).willReturn(
             Single.just(productMockBuilder.id(1).build())
@@ -313,12 +316,41 @@ class DetailsPresenterTest {
         presenter.renderLiveData.value = DetailsPresenter.ViewModel(liked = true)
         presenter.onClickLike()
 
+        val captor = ArgumentCaptor.forClass(DetailsPresenter.ViewModel::class.java)
+        verify(mockObserver, times(3)).onChanged(capture(captor))
+
+        val states = captor.allValues
+
+        val viewModel1 = DetailsPresenter.ViewModel(
+            liked = true
+        )
+
+        val viewModel2 = DetailsPresenter.ViewModel(
+            isLoading = true,
+            liked = true
+        )
+
+        val viewModel3 = DetailsPresenter.ViewModel(
+            isLoading = false,
+            liked = false,
+            price = "0",
+            priceWithDiscount = "0",
+            productId = 1
+        )
+
+        assertEquals(viewModel1, states[0])
+        assertEquals(viewModel2, states[1])
+        assertEquals(viewModel3, states[2])
+
         verify(dislike).build()
         verify(getProductDetails).build()
     }
 
     @Test
     fun `on click menu like when is not liked`() {
+
+        val mockObserver: Observer<DetailsPresenter.ViewModel> = mock()
+        presenter.renderLiveData.observeForever(mockObserver)
 
         given(like.build()).willReturn(Completable.complete())
         given(getProductDetails.build()).willReturn(
@@ -328,6 +360,34 @@ class DetailsPresenterTest {
 
         presenter.renderLiveData.value = DetailsPresenter.ViewModel(liked = false)
         presenter.onClickLike()
+
+        val captor = ArgumentCaptor.forClass(DetailsPresenter.ViewModel::class.java)
+        verify(mockObserver, times(4)).onChanged(capture(captor))
+
+        val states = captor.allValues
+
+        val viewModel1 = DetailsPresenter.ViewModel(
+            liked = false
+        )
+
+        val viewModel2 = DetailsPresenter.ViewModel(
+            showAnimation = true
+        )
+
+        val viewModel3 = DetailsPresenter.ViewModel(
+            isLoading = true,
+        )
+
+        val viewModel4 = DetailsPresenter.ViewModel(
+            price = "0",
+            priceWithDiscount = "0",
+            productId = 1
+        )
+
+        assertEquals(viewModel1, states[0])
+        assertEquals(viewModel2, states[1])
+        assertEquals(viewModel3, states[2])
+        assertEquals(viewModel4, states[3])
 
         verify(like).build()
         verify(getProductDetails).build()

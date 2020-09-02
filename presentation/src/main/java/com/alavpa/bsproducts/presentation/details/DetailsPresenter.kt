@@ -35,7 +35,7 @@ class DetailsPresenter(
     }
 
     fun load(productId: Long) {
-        renderLiveData.value = viewModel.copy(isLoading = true)
+        renderLiveData.value = viewModel.copy(isLoading = true, showAnimation = false)
         getProductDetails.productId = productId
         getProductDetails.build().exec(::renderError) { product ->
             likes.build().exec { likesList ->
@@ -129,6 +129,9 @@ class DetailsPresenter(
         } else {
             like.productId = viewModel.productId
             like.build().exec {
+                if (!viewModel.showAnimation) {
+                    renderLiveData.value = viewModel.copy(showAnimation = true)
+                }
                 load(viewModel.productId)
             }
         }
@@ -148,6 +151,7 @@ class DetailsPresenter(
         val showFeatureNotImplementedError: Boolean = false,
         val showUnknownError: Boolean = false,
         val productAddedToCart: Boolean = false,
-        val showServerException: Pair<Boolean, String> = Pair(false, "")
+        val showServerException: Pair<Boolean, String> = Pair(false, ""),
+        val showAnimation: Boolean = false
     )
 }
