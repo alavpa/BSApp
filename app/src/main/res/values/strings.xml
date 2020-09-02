@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BSProducts</string>
+    <string name="image_descriptor">Product Image</string>
+    <string name="feature_not_implemented" formatted="true">This feature is not implemented yet. Stay tuned, it\'s coming soon!</string>
+    <string name="no_stock">There is no stock available</string>
+    <string name="added_to_cart">Product added to cart</string>
+    <string name="notify">Notify me when available</string>
+    <string name="unknown_error">Unknown error, please try later.</string>
+    <string name="product_added">Product added to cart</string>
+    <string name="liked">liked</string>
+    <string name="add_to_cart">Add to cart</string>
 </resources>

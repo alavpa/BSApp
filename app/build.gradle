@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: '../ktlint.gradle'
 apply from: '../detekt.gradle'
+apply plugin: 'kotlin-kapt'
 
 android {
 
@@ -19,7 +20,7 @@ android {
         targetSdkVersion sdk_version
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,17 +43,34 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "androidx.multidex:multidex:$multidex_version"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
+    implementation "com.google.android.material:material:$material_version"
+
+    // Lottie
+    implementation "com.airbnb.android:lottie:$lottie_version"
 
     // Koin for Android
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     // test
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mockk_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
+    androidTestImplementation "androidx.test:runner:$runner_version"
+    androidTestImplementation "androidx.test:rules:$rules_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito-inline:$dexmaker_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_contrib_version"
 
 }

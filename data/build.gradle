@@ -32,8 +32,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(":domain")
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.preference:preference:$preference_version"
 
     // gson
     implementation "com.google.code.gson:gson:$gson_version"
