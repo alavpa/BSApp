@@ -1,8 +1,9 @@
 package com.alavpa.bsproducts.presentation.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.alavpa.bsproducts.domain.interactors.AddToCart
+import com.alavpa.bsproducts.domain.error.ServerException
 import com.alavpa.bsproducts.domain.interactors.GetProducts
+import com.alavpa.bsproducts.presentation.ProductItemMockBuilder
 import com.alavpa.bsproducts.presentation.ProductMockBuilder
 import com.alavpa.bsproducts.presentation.di.testModule
 import com.alavpa.bsproducts.presentation.utils.Navigation
@@ -26,8 +27,7 @@ class MainPresenterTest {
     private val productMockBuilder = ProductMockBuilder()
     private val productItemMockBuilder = ProductItemMockBuilder()
     private val getProducts: GetProducts = mockk(relaxed = true)
-    private val addToCart: AddToCart = mockk()
-    private val navigation: Navigation = mockk()
+    private val navigation: Navigation = mockk(relaxed = true)
     private lateinit var presenter: MainPresenter
 
     @Before
@@ -35,8 +35,8 @@ class MainPresenterTest {
         startKoin {
             modules(testModule)
         }
-        presenter = MainPresenter(getProducts, addToCart)
-        presenter.attach(navigation)
+        presenter = MainPresenter(getProducts)
+        presenter.attachNavigation(navigation)
     }
 
     @After
@@ -103,5 +103,49 @@ class MainPresenterTest {
     fun `on click on item`() {
         presenter.clickOn(productItemMockBuilder.id(1).build())
         verify { navigation.goToProductDetails(1) }
+    }
+
+    @Test
+    fun `on load show server error`() {
+        every { getProducts.build() } returns Single.error(ServerException("user"))
+        presenter.load()
+
+        val viewModel = MainPresenter.ViewModel(
+            showServerException = Pair(true, "user")
+        )
+        assertEquals(viewModel, presenter.renderLiveData.value)
+    }
+
+    @Test
+    fun `on next show server error`() {
+        every { getProducts.build() } returns Single.error(ServerException("user"))
+        presenter.next()
+
+        val viewModel = MainPresenter.ViewModel(
+            showServerException = Pair(true, "user")
+        )
+        assertEquals(viewModel, presenter.renderLiveData.value)
+    }
+
+    @Test
+    fun `on load show unknown error`() {
+        every { getProducts.build() } returns Single.error(Throwable())
+        presenter.load()
+
+        val viewModel = MainPresenter.ViewModel(
+            showUnknownError = true
+        )
+        assertEquals(viewModel, presenter.renderLiveData.value)
+    }
+
+    @Test
+    fun `on next show unknwon error`() {
+        every { getProducts.build() } returns Single.error(Throwable())
+        presenter.next()
+
+        val viewModel = MainPresenter.ViewModel(
+            showUnknownError = true
+        )
+        assertEquals(viewModel, presenter.renderLiveData.value)
     }
 }

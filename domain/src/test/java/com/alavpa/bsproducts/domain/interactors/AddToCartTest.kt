@@ -1,6 +1,5 @@
 package com.alavpa.bsproducts.domain.interactors
 
-import com.alavpa.bsproducts.domain.error.FeatureNotImplementedException
 import com.alavpa.bsproducts.domain.error.NoStockException
 import com.alavpa.bsproducts.domain.repository.ProductRepository
 import io.mockk.Called
@@ -29,14 +28,12 @@ class AddToCartTest {
             mockBuilder.stock(5).build()
         )
 
-        every { repository.addToCart(any()) } returns Completable.error(
-            FeatureNotImplementedException()
-        )
+        every { repository.addToCart(any()) } returns Completable.complete()
 
         addToCart.productId = 1
 
         addToCart.build().test().also {
-            it.assertError(FeatureNotImplementedException::class.java)
+            it.assertComplete()
         }
 
         verify { repository.getProductById(1) }

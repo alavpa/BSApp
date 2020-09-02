@@ -21,7 +21,7 @@ val dataModule = module {
     single { httpClient(get()) }
     single { GsonBuilder().setDateFormat("yyyy-MM-dd").create() }
     single { api(get(), get()) }
-    single { ApiDataSource(get()) } bind DataSource::class
+    single { ApiDataSource(get(), get()) } bind DataSource::class
     single { ProductDataRepository(get()) } bind ProductRepository::class
 }
 

@@ -2,7 +2,7 @@ package com.alavpa.bsproducts.utils.navigation
 
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.alavpa.bsproducts.main.MainActivity
+import com.alavpa.bsproducts.details.DetailsActivity
 import com.alavpa.bsproducts.presentation.utils.Navigation
 
 class BSNavigation : Navigation {
@@ -18,10 +18,14 @@ class BSNavigation : Navigation {
 
     override fun goToProductDetails(id: Long) {
         activity?.startActivity(
-            Intent(activity, MainActivity::class.java).apply {
+            Intent(activity, DetailsActivity::class.java).apply {
                 putExtra(EXTRA_ID, id)
             }
         )
+    }
+
+    override fun close() {
+        activity?.finish()
     }
 
     fun detach() {

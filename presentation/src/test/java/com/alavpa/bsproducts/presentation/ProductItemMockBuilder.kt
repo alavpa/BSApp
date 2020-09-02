@@ -1,4 +1,4 @@
-package com.alavpa.bsproducts.presentation.main
+package com.alavpa.bsproducts.presentation
 
 import com.alavpa.bsproducts.presentation.model.ProductItem
 

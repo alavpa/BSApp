@@ -13,10 +13,10 @@ data class ProductDataRepository(private val apiDataSource: DataSource) : Produc
     }
 
     override fun getProductById(id: Long): Single<Product> {
-        TODO("Not yet implemented")
+        return apiDataSource.getProductDetails(id).map { it.toProduct() }
     }
 
     override fun addToCart(productId: Long): Completable {
-        TODO("Not yet implemented")
+        return Completable.complete()
     }
 }
