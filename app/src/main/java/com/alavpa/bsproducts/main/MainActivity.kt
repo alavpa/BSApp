@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.rv_products) }
     private val pullToRefresh: SwipeRefreshLayout by lazy { findViewById(R.id.pull_to_refresh) }
 
+    private var serverDialog: ServerDialog? = null
+
     private lateinit var gridLayoutManager: GridLayoutManager
 
     private val presenter: MainPresenter by viewModel()
@@ -87,15 +89,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showServerDialog(message: String) {
-        ServerDialog.newInstance(
-            message,
-            object : ServerDialog.ServerDialogListener {
-                override fun onOk() {
-                    presenter.onCloseServerException()
+        if (serverDialog == null) {
+            serverDialog = ServerDialog.newInstance(
+                message,
+                object : ServerDialog.ServerDialogListener {
+                    override fun onOk() {
+                        serverDialog = null
+                        presenter.onCloseServerException()
+                    }
                 }
-            }
-        ).apply { isCancelable = false }
-            .show(supportFragmentManager, "ServerDialog")
+            ).apply { isCancelable = false }
+
+            serverDialog?.show(supportFragmentManager, "ServerDialog")
+        }
     }
 
     private fun showUnknownError() {

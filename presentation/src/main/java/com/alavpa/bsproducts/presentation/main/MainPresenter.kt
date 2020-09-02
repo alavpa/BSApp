@@ -51,14 +51,11 @@ class MainPresenter(
     }
 
     private fun renderError(throwable: Throwable) {
-        throwable.printStackTrace()
         when (throwable) {
-            is ServerException -> {
-                renderLiveData.value = viewModel.copy(
-                    isLoading = false,
-                    showServerException = Pair(true, throwable.userMessage)
-                )
-            }
+            is ServerException -> renderLiveData.value = viewModel.copy(
+                isLoading = false,
+                showServerException = Pair(true, throwable.userMessage)
+            )
             else -> renderLiveData.value = viewModel.copy(
                 isLoading = false,
                 showUnknownError = true
