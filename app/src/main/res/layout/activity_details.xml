@@ -100,7 +100,7 @@
         android:layout_height="match_parent"
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/like_animation2" />
+        app:lottie_rawRes="@raw/like_animation" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add"
