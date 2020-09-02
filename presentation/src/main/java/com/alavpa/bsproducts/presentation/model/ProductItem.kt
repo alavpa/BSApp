@@ -8,16 +8,18 @@ data class ProductItem(
     val brand: String,
     val price: Int,
     val currency: String,
-    val image: String
+    val image: String,
+    val liked: Boolean
 )
 
-fun Product.toItem(): ProductItem {
+fun Product.toItem(liked: Boolean): ProductItem {
     return ProductItem(
         this.id,
         this.name,
         this.brand,
         this.price,
         this.currency,
-        this.image
+        this.image,
+        liked
     )
 }

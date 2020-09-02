@@ -22,12 +22,16 @@ class MainAdapter(
         view: View
     ) : RecyclerView.ViewHolder(view) {
         private val imageView by lazy { itemView.findViewById<ImageView>(R.id.image) }
+        private val likeView by lazy { itemView.findViewById<ImageView>(R.id.like) }
         fun bind(item: ProductItem) {
             imageLoader.load(
                 context,
                 item.image,
                 imageView
             )
+
+            if (item.liked) imageLoader.load(context, R.drawable.ic_baseline_favorite_24, likeView)
+            else imageLoader.load(context, R.drawable.ic_baseline_favorite_border_24, likeView)
         }
     }
 

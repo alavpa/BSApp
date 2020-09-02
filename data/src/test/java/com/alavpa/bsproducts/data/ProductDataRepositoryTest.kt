@@ -1,9 +1,11 @@
 package com.alavpa.bsproducts.data
 
-import com.alavpa.bsproducts.data.api.ApiDataSource
+import com.alavpa.bsproducts.data.api.RemoteDataSource
+import com.alavpa.bsproducts.data.local.LocalDataSource
 import com.alavpa.bsproducts.data.model.ProductDetailsResponse
 import com.alavpa.bsproducts.data.model.ProductItemResponse
 import com.alavpa.bsproducts.domain.model.Product
+import com.alavpa.bsproducts.domain.repository.ProductRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -12,17 +14,18 @@ import org.junit.Before
 import org.junit.Test
 
 class ProductDataRepositoryTest {
-    private lateinit var repository: ProductDataRepository
-    private val dataSource: ApiDataSource = mockk()
+    private lateinit var repository: ProductRepository
+    private val remoteDataSource: RemoteDataSource = mockk()
+    private val localDataSource: LocalDataSource = mockk(relaxed = true)
 
     @Before
     fun setup() {
-        repository = ProductDataRepository(dataSource)
+        repository = ProductDataRepository(remoteDataSource, localDataSource)
     }
 
     @Test
     fun `get products`() {
-        every { dataSource.getItems(any(), any()) } returns Single.just(
+        every { remoteDataSource.getItems(any(), any()) } returns Single.just(
             listOf(
                 ProductItemResponse(
                     1,
@@ -72,12 +75,12 @@ class ProductDataRepositoryTest {
             )
         }
 
-        verify { dataSource.getItems(1, 2) }
+        verify { remoteDataSource.getItems(1, 2) }
     }
 
     @Test
     fun `get product details`() {
-        every { dataSource.getProductDetails(any()) } returns Single.just(
+        every { remoteDataSource.getProductDetails(any()) } returns Single.just(
             ProductDetailsResponse(
                 1,
                 "name",
@@ -107,6 +110,37 @@ class ProductDataRepositoryTest {
             )
         }
 
-        verify { dataSource.getProductDetails(1) }
+        verify { remoteDataSource.getProductDetails(1) }
+    }
+
+    @Test
+    fun like() {
+
+        repository.like(1).test().also {
+            it.assertComplete()
+        }
+
+        verify { localDataSource.like(1) }
+    }
+
+    @Test
+    fun dislike() {
+
+        repository.dislike(1).test().also {
+            it.assertComplete()
+        }
+
+        verify { localDataSource.dislike(1) }
+    }
+
+    @Test
+    fun likes() {
+
+        every { localDataSource.likes() } returns listOf(1L)
+        repository.likes().test().also {
+            it.assertValue(listOf(1))
+        }
+
+        verify { localDataSource.likes() }
     }
 }

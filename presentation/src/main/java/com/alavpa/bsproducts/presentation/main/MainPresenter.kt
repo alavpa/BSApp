@@ -3,13 +3,15 @@ package com.alavpa.bsproducts.presentation.main
 import androidx.lifecycle.MutableLiveData
 import com.alavpa.bsproducts.domain.error.ServerException
 import com.alavpa.bsproducts.domain.interactors.GetProducts
+import com.alavpa.bsproducts.domain.interactors.Likes
 import com.alavpa.bsproducts.presentation.BasePresenter
 import com.alavpa.bsproducts.presentation.model.ProductItem
 import com.alavpa.bsproducts.presentation.model.toItem
 import com.alavpa.bsproducts.presentation.utils.Navigation
 
 class MainPresenter(
-    private val getProducts: GetProducts
+    private val getProducts: GetProducts,
+    private val likes: Likes
 ) : BasePresenter() {
 
     val renderLiveData = MutableLiveData<ViewModel>()
@@ -29,10 +31,12 @@ class MainPresenter(
         renderLiveData.value = viewModel.copy(isLoading = true)
         getProducts.page = 1
         getProducts.build().exec(::renderError) { products ->
-            renderLiveData.value = viewModel.copy(
-                items = products.map { it.toItem() },
-                isLoading = false
-            )
+            likes.build().exec { likesList ->
+                renderLiveData.value = viewModel.copy(
+                    items = products.map { it.toItem(likesList.contains(it.id)) },
+                    isLoading = false
+                )
+            }
         }
     }
 
@@ -41,11 +45,13 @@ class MainPresenter(
             renderLiveData.value = viewModel.copy(isLoading = true)
             getProducts.page = getProducts.page + 1
             getProducts.build().exec(::renderError) { products ->
-                renderLiveData.value = viewModel.copy(
-                    items = viewModel.items.toMutableList()
-                        .apply { addAll(products.map { it.toItem() }) },
-                    isLoading = false
-                )
+                likes.build().exec { likesList ->
+                    renderLiveData.value = viewModel.copy(
+                        items = viewModel.items.toMutableList()
+                            .apply { addAll(products.map { it.toItem(likesList.contains(it.id)) }) },
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -69,6 +75,10 @@ class MainPresenter(
 
     fun clickOn(item: ProductItem) {
         navigation?.goToProductDetails(item.id)
+    }
+
+    fun likeOn(item: ProductItem) {
+
     }
 
     fun onCloseUnknownError() {

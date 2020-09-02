@@ -5,6 +5,7 @@ import com.alavpa.bsproducts.data.di.dataModule
 import com.alavpa.bsproducts.di.androidModule
 import com.alavpa.bsproducts.domain.di.domainModule
 import com.alavpa.bsproducts.presentation.di.presentationModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class BSApplication : MultiDexApplication() {
@@ -13,6 +14,7 @@ class BSApplication : MultiDexApplication() {
         super.onCreate()
 
         startKoin {
+            androidContext(this@BSApplication)
             modules(
                 listOf(
                     dataModule,

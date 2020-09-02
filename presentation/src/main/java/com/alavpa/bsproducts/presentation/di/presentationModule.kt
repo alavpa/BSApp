@@ -10,6 +10,6 @@ import org.koin.dsl.module
 val presentationModule = module {
     single { ThreadProvider() }
     factory { InteractorExecutor(get()) }
-    viewModel { MainPresenter(get()) }
+    viewModel { MainPresenter(get(), get()) }
     viewModel { DetailsPresenter(get(), get()) }
 }
