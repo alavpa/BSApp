@@ -94,7 +94,8 @@ class MainActivity : AppCompatActivity() {
                     presenter.onCloseServerException()
                 }
             }
-        ).show(supportFragmentManager, "ServerDialog")
+        ).apply { isCancelable = false }
+            .show(supportFragmentManager, "ServerDialog")
     }
 
     private fun showUnknownError() {
@@ -104,7 +105,8 @@ class MainActivity : AppCompatActivity() {
                     presenter.onCloseUnknownError()
                 }
             }
-        ).show(supportFragmentManager, "UnknownErrorDialog")
+        ).apply { isCancelable = false }
+            .show(supportFragmentManager, "UnknownErrorDialog")
     }
 
     override fun onDestroy() {

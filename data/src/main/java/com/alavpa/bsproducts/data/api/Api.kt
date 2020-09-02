@@ -23,7 +23,7 @@ interface Api {
         @Header("Authorization") token: String = TOKEN
     ): Single<Response<PageResponse>>
 
-    @GET("product/{productId}")
+    @GET("products/{productId}")
     fun getProductDetails(
         @Path("productId") id: Long,
         @Header("Authorization") token: String = TOKEN

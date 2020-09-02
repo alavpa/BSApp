@@ -14,6 +14,10 @@ class DetailsPresenter(
     private val addToCart: AddToCart
 ) : BasePresenter() {
 
+    companion object {
+        private const val PERCENT = 100.0
+    }
+
     val renderLiveData = MutableLiveData<ViewModel>()
     private val viewModel: ViewModel
         get() = renderLiveData.value ?: ViewModel()
@@ -27,7 +31,6 @@ class DetailsPresenter(
         this.navigation = null
     }
 
-
     fun load(productId: Long) {
         renderLiveData.value = viewModel.copy(isLoading = true)
         getProductDetails.productId = productId
@@ -38,15 +41,15 @@ class DetailsPresenter(
 
     private fun renderError(throwable: Throwable) {
         when (throwable) {
-            is NoStockException -> renderLiveData.value =
-                viewModel.copy(showNoStockError = true, isLoading = false)
-            is ServerException -> renderLiveData.value =
-                viewModel.copy(
+            is NoStockException ->
+                renderLiveData.value = viewModel.copy(showNoStockError = true, isLoading = false)
+            is ServerException ->
+                renderLiveData.value = viewModel.copy(
                     showServerException = Pair(true, throwable.userMessage),
                     isLoading = false
                 )
-            else -> renderLiveData.value =
-                viewModel.copy(showUnknownError = true, isLoading = false)
+            else ->
+                renderLiveData.value = viewModel.copy(showUnknownError = true, isLoading = false)
         }
     }
 
@@ -56,7 +59,6 @@ class DetailsPresenter(
         addToCart.build().exec(::renderError) {
             renderLiveData.value = viewModel.copy(isLoading = false, productAddedToCart = true)
         }
-
     }
 
     private fun renderProduct(product: Product) {
@@ -73,7 +75,7 @@ class DetailsPresenter(
     }
 
     private fun calculatePriceWithDiscount(product: Product): Int {
-        return product.price - (product.discountPercentage / 100.0 * product.price).toInt()
+        return product.price - (product.discountPercentage / PERCENT * product.price).toInt()
     }
 
     fun close() {

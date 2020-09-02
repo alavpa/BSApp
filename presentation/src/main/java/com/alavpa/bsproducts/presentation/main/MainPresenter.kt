@@ -25,7 +25,6 @@ class MainPresenter(
         this.navigation = null
     }
 
-
     fun load() {
         renderLiveData.value = viewModel.copy(isLoading = true)
         getProducts.page = 1

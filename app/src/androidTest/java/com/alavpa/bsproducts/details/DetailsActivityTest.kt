@@ -7,16 +7,23 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withChild
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.custom.SwipeToRefreshMatchers
 import com.alavpa.bsproducts.presentation.details.DetailsPresenter
 import com.alavpa.bsproducts.utils.loader.ImageLoader
-import com.nhaarman.mockitokotlin2.*
-import kotlinx.android.synthetic.main.activity_details.*
-import org.hamcrest.Matchers
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import kotlinx.android.synthetic.main.activity_details.image
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -171,7 +178,7 @@ class DetailsActivityTest {
         }
 
         onView(withId(R.id.pull_to_refresh)).check(
-            matches(Matchers.not(SwipeToRefreshMatchers.isRefreshing()))
+            matches(not(SwipeToRefreshMatchers.isRefreshing()))
         )
     }
 
@@ -234,6 +241,6 @@ class DetailsActivityTest {
 
         onView(withText(R.string.product_added))
             .inRoot(withDecorView(not(`is`(rule.activity.window.decorView))))
-            .check(matches(isDisplayed()));
+            .check(matches(isDisplayed()))
     }
 }

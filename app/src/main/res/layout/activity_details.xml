@@ -2,7 +2,6 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -49,6 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size"
                     app:layout_constraintTop_toBottomOf="@+id/image" />
 
                 <TextView
@@ -56,6 +57,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size"
                     app:layout_constraintTop_toBottomOf="@+id/tv_brand" />
 
                 <LinearLayout
@@ -67,13 +70,19 @@
 
                     <TextView
                         android:id="@+id/tv_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/tv_discount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size" />
 
                 </LinearLayout>
 
@@ -90,6 +99,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="@dimen/margin"
-        tools:text="add to cart" />
+        android:text="@string/add_to_cart" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

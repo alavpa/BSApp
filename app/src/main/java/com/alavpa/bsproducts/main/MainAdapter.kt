@@ -67,6 +67,5 @@ class MainAdapter(
                 this.notifyDataSetChanged()
             }
         }
-
     }
 }

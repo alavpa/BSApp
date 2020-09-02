@@ -1,5 +1,6 @@
 package com.alavpa.bsproducts.details
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
@@ -52,6 +53,8 @@ class DetailsActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        tvPrice.paintFlags = tvPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
         presenter.renderLiveData.observe(this, Observer(::render))
     }
@@ -111,9 +114,9 @@ class DetailsActivity : AppCompatActivity() {
                 override fun onCancel() {
                     presenter.onCancelNoStockDialog()
                 }
-
             }
-        ).show(supportFragmentManager, "NoStockDialog")
+        ).apply { isCancelable = false }
+            .show(supportFragmentManager, "NoStockDialog")
     }
 
     private fun showFeatureNotImplementedError() {
@@ -123,7 +126,8 @@ class DetailsActivity : AppCompatActivity() {
                     presenter.onCloseFeatureNotImplementedDialog()
                 }
             }
-        ).show(supportFragmentManager, "FeatureNotImplementedDialog")
+        ).apply { isCancelable = false }
+            .show(supportFragmentManager, "FeatureNotImplementedDialog")
     }
 
     private fun showUnknownError() {
@@ -133,7 +137,8 @@ class DetailsActivity : AppCompatActivity() {
                     presenter.onCloseUnknownError()
                 }
             }
-        ).show(supportFragmentManager, "UnknownErrorDialog")
+        ).apply { isCancelable = false }
+            .show(supportFragmentManager, "UnknownErrorDialog")
     }
 
     private fun showServerDialog(message: String) {
@@ -144,7 +149,8 @@ class DetailsActivity : AppCompatActivity() {
                     presenter.onCloseServerException()
                 }
             }
-        ).show(supportFragmentManager, "ServerDialog")
+        ).apply { isCancelable = false }
+            .show(supportFragmentManager, "ServerDialog")
     }
 
     override fun onDestroy() {

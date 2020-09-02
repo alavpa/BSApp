@@ -1,6 +1,5 @@
 package com.alavpa.bsproducts.domain.interactors
 
-import com.alavpa.bsproducts.domain.error.FeatureNotImplementedException
 import com.alavpa.bsproducts.domain.error.NoStockException
 import com.alavpa.bsproducts.domain.repository.ProductRepository
 import io.mockk.Called
