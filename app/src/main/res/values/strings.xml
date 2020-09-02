@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BSProducts</string>
+    <string name="app_name">BS</string>
     <string name="image_descriptor">Product Image</string>
     <string name="feature_not_implemented" formatted="true">This feature is not implemented yet. Stay tuned, it\'s coming soon!</string>
     <string name="no_stock">There is no stock available</string>
