@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 val totalItemCount = gridLayoutManager.itemCount
                 val pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition()
 
-                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount && dy > 0) {
                     presenter.next()
                 }
             }
