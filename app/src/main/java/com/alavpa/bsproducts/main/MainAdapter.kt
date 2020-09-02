@@ -30,8 +30,8 @@ class MainAdapter(
                 imageView
             )
 
-            if (item.liked) imageLoader.load(context, R.drawable.ic_baseline_favorite_24, likeView)
-            else imageLoader.load(context, R.drawable.ic_baseline_favorite_border_24, likeView)
+            if (item.liked) imageLoader.load(R.drawable.ic_baseline_favorite_24, likeView)
+            else imageLoader.load(R.drawable.ic_baseline_favorite_border_24, likeView)
         }
     }
 
@@ -70,6 +70,7 @@ class MainAdapter(
                 this.items.addAll(items)
                 this.notifyDataSetChanged()
             }
+            else -> notifyDataSetChanged()
         }
     }
 }

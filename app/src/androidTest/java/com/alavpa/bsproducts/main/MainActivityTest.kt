@@ -169,7 +169,7 @@ class MainActivityTest {
             val image1 = it.findViewById<RecyclerView>(R.id.rv_products)[0]
                 .findViewById<ImageView>(R.id.like)
 
-            verify(imageLoader).load(it, R.drawable.ic_baseline_favorite_24, image1)
+            verify(imageLoader).load(R.drawable.ic_baseline_favorite_24, image1)
         }
     }
 

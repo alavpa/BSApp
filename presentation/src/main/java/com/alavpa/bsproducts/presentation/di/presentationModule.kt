@@ -11,5 +11,5 @@ val presentationModule = module {
     single { ThreadProvider() }
     factory { InteractorExecutor(get()) }
     viewModel { MainPresenter(get(), get()) }
-    viewModel { DetailsPresenter(get(), get()) }
+    viewModel { DetailsPresenter(get(), get(), get(), get(), get()) }
 }

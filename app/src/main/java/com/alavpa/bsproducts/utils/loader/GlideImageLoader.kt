@@ -11,7 +11,7 @@ class GlideImageLoader : ImageLoader {
         Glide.with(context).load(url).override(SIZE_ORIGINAL).into(imageView)
     }
 
-    override fun load(context: Context, id: Int, imageView: ImageView) {
-        Glide.with(context).load(id).override(SIZE_ORIGINAL).into(imageView)
+    override fun load(id: Int, imageView: ImageView) {
+        imageView.setImageResource(id)
     }
 }

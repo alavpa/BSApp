@@ -2,17 +2,19 @@ package com.alavpa.bsproducts.details
 
 import android.graphics.Paint
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alavpa.bsproducts.R
 import com.alavpa.bsproducts.presentation.details.DetailsPresenter
 import com.alavpa.bsproducts.utils.dialog.ServerDialog
+import com.alavpa.bsproducts.utils.dialog.ToastManager
 import com.alavpa.bsproducts.utils.dialog.UnknownErrorDialog
 import com.alavpa.bsproducts.utils.loader.ImageLoader
 import com.alavpa.bsproducts.utils.navigation.BSNavigation
@@ -24,6 +26,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private val navigation: BSNavigation by inject()
     private val imageLoader: ImageLoader by inject()
+    private val toastManager: ToastManager by inject()
 
     private val presenter: DetailsPresenter by viewModel()
 
@@ -35,6 +38,8 @@ class DetailsActivity : AppCompatActivity() {
     private val toolbar: Toolbar by lazy { findViewById(R.id.toolbar) }
     private val btnAdd: ExtendedFloatingActionButton by lazy { findViewById(R.id.btn_add) }
     private val pullToRefresh: SwipeRefreshLayout by lazy { findViewById(R.id.pull_to_refresh) }
+
+    private var isLiked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +64,28 @@ class DetailsActivity : AppCompatActivity() {
         presenter.renderLiveData.observe(this, Observer(::render))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.details_menu, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        return menu?.let {
+            it.findItem(R.id.menu_like).icon = if (isLiked)
+                ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_white_24)
+            else ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_white_border_24)
+            true
+        } ?: super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 presenter.close()
+                true
+            }
+            R.id.menu_like -> {
+                presenter.onClickLike()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -82,6 +105,10 @@ class DetailsActivity : AppCompatActivity() {
         tvDescription.text = viewModel.description
         tvPrice.text = viewModel.price
         tvDiscount.text = viewModel.priceWithDiscount
+        if (isLiked != viewModel.liked) {
+            isLiked = viewModel.liked
+            invalidateOptionsMenu()
+        }
 
         if (viewModel.showNoStockError) {
             showNoStockError()
@@ -100,7 +127,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         if (viewModel.productAddedToCart) {
-            Toast.makeText(this, R.string.product_added, Toast.LENGTH_SHORT).show()
+            toastManager.show(this, R.string.product_added)
         }
     }
 
